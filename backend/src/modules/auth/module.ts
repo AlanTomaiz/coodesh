@@ -9,7 +9,6 @@ export function createAuthModule(db: Db) {
   const mongoRepository = new AuthMongoRepository(db)
   const service = new AuthService(mongoRepository)
   const controller = new AuthController(service)
-
   const authRouter = createAuthRouter(controller)
   return { authRouter }
 }
