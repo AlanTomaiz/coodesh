@@ -2,11 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Coodesh Challenge",
-  "main": "dist/server.js",
+  "main": "dist/main.js",
   "type": "module",
   "author": "Alanderson Tomaiz",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/main.ts"
   },
   "dependencies": {
     "dotenv": "^17.2.1",
