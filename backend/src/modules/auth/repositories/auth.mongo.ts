@@ -1,4 +1,5 @@
 import { Collection, Db, ObjectId } from 'mongodb'
+
 import { User } from '../../user/model.ts'
 import { IAuthRepository } from './auth.ts'
 
