@@ -1,8 +1,9 @@
 import { Db } from 'mongodb'
-import { AuthController } from './controller.ts'
+
+import { AuthController } from './controllers/index.ts'
 import { AuthMongoRepository } from './repositories/auth.mongo.ts'
-import { createAuthRouter } from './routes.ts'
-import { AuthService } from './service.ts'
+import { createAuthRouter } from './routes/index.ts'
+import { AuthService } from './services/index.ts'
 
 export function createAuthModule(db: Db) {
   const mongoRepository = new AuthMongoRepository(db)

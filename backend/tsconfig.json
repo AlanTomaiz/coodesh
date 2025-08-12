@@ -10,11 +10,19 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "allowImportingTsExtensions": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": "./src",
 
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16"
+    "moduleResolution": "node16",
+
+    "paths": {
+      "@error/*": ["errors/*"],
+      "@module/*": ["modules/*"]
+    }
   },
   "include": ["src"],
   "exclude": ["node_modules"]

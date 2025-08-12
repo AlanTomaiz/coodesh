@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import express from 'express'
+
 import { ErrorHandler } from './middleware/errorHandler.ts'
 import { createAuthModule } from './modules/auth/module.ts'
 import { connectMongo } from './shared/database/mongo-client.ts'
