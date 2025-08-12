@@ -33,4 +33,23 @@ export class AuthController {
       token: `Bearer ${token}`
     })
   }
+
+  async signin(req: Request, res: Response) {
+    const { email, password } = req.body
+
+    if (!email || !password) {
+      throw new AppError('Email and password are required.')
+    }
+
+    const { user, token } = await this.authService.authenticateUser({
+      email,
+      password
+    })
+
+    return res.status(200).json({
+      id: user.id,
+      name: user.name,
+      token: `Bearer ${token}`
+    })
+  }
 }
