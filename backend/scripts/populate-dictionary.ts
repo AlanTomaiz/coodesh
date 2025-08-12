@@ -1,7 +1,5 @@
-import {
-  connectMongo,
-  disconnectMongo
-} from '../shared/database/mongo-client.ts'
+import 'dotenv/config'
+import * as mongoDB from '../src/shared/database/mongo-client.ts'
 
 const GITHUB_WORDS_URL = process.env.GITHUB_WORDS_URL!
 const COLLECTION = 'dictionary_words'
@@ -16,9 +14,9 @@ async function fetchWordsList(url: string): Promise<string[]> {
     .filter(Boolean)
 }
 
-export default async function populateDictionary() {
+;(async () => {
   try {
-    const db = await connectMongo()
+    const db = await mongoDB.connectMongo()
 
     // Busca lista de palavras do arquivo no GitHub
     console.log('Fetching wordlist from GitHub...')
@@ -39,6 +37,6 @@ export default async function populateDictionary() {
   } catch (error) {
     console.error('Error feeding dictionary:', error)
   } finally {
-    await disconnectMongo()
+    await mongoDB.disconnectMongo()
   }
-}
+})()

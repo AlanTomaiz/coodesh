@@ -6,7 +6,8 @@
   "type": "module",
   "author": "Alanderson Tomaiz",
   "scripts": {
-    "dev": "tsx watch src/main.ts"
+    "dev": "tsx watch src/main.ts",
+    "populate": "tsx scripts/populate-dictionary.ts"
   },
   "dependencies": {
     "dotenv": "^17.2.1",
