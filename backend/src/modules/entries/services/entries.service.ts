@@ -30,4 +30,8 @@ export class EntriesService {
   async setFavorite({ userId, word }: Request) {
     await this.favoriteRepository.addWord(userId, word)
   }
+
+  async removeFavorite({ userId, word }: Request) {
+    await this.favoriteRepository.removeWord(userId, word)
+  }
 }

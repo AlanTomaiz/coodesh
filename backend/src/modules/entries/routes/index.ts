@@ -14,5 +14,10 @@ export function createEntriesRouter(controller: EntriesController) {
     controller.setFavorite.bind(controller)
   )
 
+  router.delete(
+    '/entries/en/:word/unfavorite',
+    controller.setFavorite.bind(controller)
+  )
+
   return router
 }

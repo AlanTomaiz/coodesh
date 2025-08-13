@@ -25,4 +25,8 @@ export class FavoriteMongoRepository implements IFavoriteRepository {
       { upsert: true }
     )
   }
+
+  async removeWord(userId: string, word: string) {
+    await this.collection.deleteOne({ userId, word })
+  }
 }
