@@ -1,6 +1,6 @@
 import { Collection, Db, ObjectId } from 'mongodb'
 
-import { IEntriesRepository, WordsFilter } from './entries.ts'
+import { IEntriesRepository, WordsFilter } from './entries'
 
 interface WordsDocument {
   _id: ObjectId

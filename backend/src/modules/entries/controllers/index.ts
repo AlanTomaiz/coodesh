@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 
-import { EntriesService } from '../services/index.ts'
+import { AppError } from '@error/appError'
+import { EntriesService } from '../services/entries.service'
 
 export class EntriesController {
   constructor(private readonly service: EntriesService) {}
@@ -18,5 +19,17 @@ export class EntriesController {
       hasNext: data.hasNext,
       hasPrev: data.hasPrev
     })
+  }
+
+  async getEntryByWord(req: Request, res: Response) {
+    const { word } = req.params
+    if (!word) throw new AppError('Word not provided.')
+
+    const data = await this.service.getExternalWordData({
+      userId: req.userid,
+      word
+    })
+
+    res.json(data)
   }
 }
