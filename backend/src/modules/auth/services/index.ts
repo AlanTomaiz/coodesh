@@ -16,7 +16,7 @@ interface RequestAuth {
   password: string
 }
 
-const BCRYPT_SALT_ROUNDS = process.env.BCRYPT_SALT_ROUNDS! || 10
+const BCRYPT_SALT_ROUNDS = Number(process.env.BCRYPT_SALT_ROUNDS! || 10)
 const JWT_SECRET = process.env.JWT_SECRET! || 'supersecret'
 
 export class AuthService {
@@ -40,7 +40,7 @@ export class AuthService {
     const normalizeEmail = this.normalizeEmail(email)
     const hash = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
     const user = await this.repository.save(
-      new User(undefined, name, normalizeEmail, hash)
+      new User(undefined, name, normalizeEmail, hash, new Date())
     )
 
     const token = this.generateToken(user)

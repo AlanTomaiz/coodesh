@@ -8,6 +8,7 @@ interface UserDocument {
   name: string
   email: string
   password: string
+  createdAt: Date
 }
 
 export class AuthMongoRepository implements IAuthRepository {
@@ -22,21 +23,29 @@ export class AuthMongoRepository implements IAuthRepository {
     const doc = await this.collection.findOne({ email })
     if (!doc) return null
 
-    return new User(doc._id.toString(), doc.name, doc.email, doc.password)
+    return new User(
+      doc._id.toString(),
+      doc.name,
+      doc.email,
+      doc.password,
+      doc.createdAt
+    )
   }
 
   async save(data: User) {
     const result = await this.collection.insertOne({
       name: data.name,
       email: data.email,
-      password: data.password
+      password: data.password,
+      createdAt: data.createdAt
     })
 
     return new User(
       result.insertedId.toHexString(),
       data.name,
       data.email,
-      data.password
+      data.password,
+      data.createdAt
     )
   }
 }
