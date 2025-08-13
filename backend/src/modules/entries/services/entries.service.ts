@@ -1,8 +1,9 @@
+import { IFavoriteRepository } from '@module/user/repositories/favorite'
 import { IHistoryRepository } from '@module/user/repositories/history'
 import { IEntriesRepository, WordsFilter } from '../repositories/entries'
 import { ExternalDictionaryService } from './external-dictionary.service'
 
-interface RequestFindWord {
+interface Request {
   userId: string
   word: string
 }
@@ -11,6 +12,7 @@ export class EntriesService {
   constructor(
     private readonly repository: IEntriesRepository,
     private readonly historyRepository: IHistoryRepository,
+    private readonly favoriteRepository: IFavoriteRepository,
     private readonly dictionaryService: ExternalDictionaryService
   ) {}
 
@@ -18,10 +20,14 @@ export class EntriesService {
     return this.repository.findEntriesWithPage(params)
   }
 
-  async getExternalWordData({ userId, word }: RequestFindWord) {
+  async getExternalWordData({ userId, word }: Request) {
     const wordData = await this.dictionaryService.fetchWordData(word)
 
     await this.historyRepository.addWord(userId, word)
     return wordData
+  }
+
+  async setFavorite({ userId, word }: Request) {
+    await this.favoriteRepository.addWord(userId, word)
   }
 }

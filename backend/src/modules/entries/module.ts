@@ -1,5 +1,6 @@
 import { Db } from 'mongodb'
 
+import { FavoriteMongoRepository } from '@module/user/repositories/favorite.mongo'
 import { HistoryMongoRepository } from '@module/user/repositories/history.mongo'
 import { EntriesController } from './controllers'
 import { EntriesMongoRepository } from './repositories/entries.mongo'
@@ -10,11 +11,13 @@ import { ExternalDictionaryService } from './services/external-dictionary.servic
 export function createEntriesModule(db: Db) {
   const entriesRepository = new EntriesMongoRepository(db)
   const historyRepository = new HistoryMongoRepository(db)
+  const favoriteRepository = new FavoriteMongoRepository(db)
 
   const externalDictionaryService = new ExternalDictionaryService()
   const service = new EntriesService(
     entriesRepository,
     historyRepository,
+    favoriteRepository,
     externalDictionaryService
   )
 

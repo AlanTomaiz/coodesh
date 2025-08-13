@@ -6,7 +6,13 @@ export function createEntriesRouter(controller: EntriesController) {
   const router = Router()
 
   router.get('/en', controller.getDictionary.bind(controller))
+
   router.get('/en/:word', controller.getEntryByWord.bind(controller))
+
+  router.post(
+    '/entries/en/:word/favorite',
+    controller.setFavorite.bind(controller)
+  )
 
   return router
 }

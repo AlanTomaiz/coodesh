@@ -32,4 +32,12 @@ export class EntriesController {
 
     res.json(data)
   }
+
+  async setFavorite(req: Request, res: Response) {
+    const { word } = req.params
+    if (!word) throw new AppError('Word not provided.')
+
+    await this.service.setFavorite({ userId: req.userid, word })
+    res.status(201).send()
+  }
 }
