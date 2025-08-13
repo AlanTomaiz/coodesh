@@ -8,9 +8,14 @@ interface IndexResults {
   word: string
   added: Date
 }
+
 export interface IndexReturn {
   results: IndexResults[]
   totalDocs: number
+  page: number
+  totalPages: number
+  hasNext: boolean
+  hasPrev: boolean
 }
 
 export interface IHistoryRepository {

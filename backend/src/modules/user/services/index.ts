@@ -6,4 +6,8 @@ export class UserService {
   async listHistory(params: Filter) {
     return this.historyRepository.getAll(params)
   }
+
+  async listFavorites(params: Filter) {
+    return this.historyRepository.getAll(params)
+  }
 }
