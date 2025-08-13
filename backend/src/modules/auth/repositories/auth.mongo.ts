@@ -24,7 +24,7 @@ export class AuthMongoRepository implements IAuthRepository {
     if (!doc) return null
 
     return new User(
-      doc._id.toString(),
+      doc._id.toHexString(),
       doc.name,
       doc.email,
       doc.password,

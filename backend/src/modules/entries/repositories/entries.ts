@@ -1,4 +1,4 @@
-export interface WordsFilter {
+export interface Filter {
   search?: string
   limit: number
   page: number
@@ -13,5 +13,5 @@ export interface IndexReturn {
 }
 
 export interface IEntriesRepository {
-  findEntriesWithPage(params: WordsFilter): Promise<IndexReturn>
+  findEntriesWithPage(params: Filter): Promise<IndexReturn>
 }

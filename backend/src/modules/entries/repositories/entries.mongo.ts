@@ -1,6 +1,6 @@
 import { Collection, Db, ObjectId } from 'mongodb'
 
-import { IEntriesRepository, WordsFilter } from './entries'
+import { Filter, IEntriesRepository } from './entries'
 
 interface WordsDocument {
   _id: ObjectId
@@ -14,7 +14,7 @@ export class EntriesMongoRepository implements IEntriesRepository {
     this.collection = db.collection<WordsDocument>('dictionary_words')
   }
 
-  async findEntriesWithPage(params: WordsFilter) {
+  async findEntriesWithPage(params: Filter) {
     const { search, limit = 25, page = 1 } = params
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

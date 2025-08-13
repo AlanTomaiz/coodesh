@@ -1,0 +1,18 @@
+import { Request, Response } from 'express'
+import { UserService } from '../services'
+
+export class UserController {
+  constructor(private readonly userService: UserService) {}
+
+  async indexHistory(req: Request, res: Response) {
+    const limit = parseInt(req.query.limit as string) || 25
+    const page = parseInt(req.query.page as string) || 1
+    const data = await this.userService.listHistory({
+      userId: req.userid,
+      limit,
+      page
+    })
+
+    res.json(data)
+  }
+}

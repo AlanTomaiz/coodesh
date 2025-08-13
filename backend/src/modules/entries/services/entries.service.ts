@@ -1,6 +1,6 @@
 import { IFavoriteRepository } from '@module/user/repositories/favorite'
 import { IHistoryRepository } from '@module/user/repositories/history'
-import { IEntriesRepository, WordsFilter } from '../repositories/entries'
+import { Filter, IEntriesRepository } from '../repositories/entries'
 import { ExternalDictionaryService } from './external-dictionary.service'
 
 interface Request {
@@ -16,7 +16,7 @@ export class EntriesService {
     private readonly dictionaryService: ExternalDictionaryService
   ) {}
 
-  async getDictionaryWords(params: WordsFilter) {
+  async getDictionaryWords(params: Filter) {
     return this.repository.findEntriesWithPage(params)
   }
 

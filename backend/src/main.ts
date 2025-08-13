@@ -3,6 +3,7 @@ import express from 'express'
 
 import { createAuthModule } from '@module/auth/module'
 import { createEntriesModule } from '@module/entries/module'
+import { createUserModule } from '@module/user/module'
 import { connectMongo } from '@shared/database/mongo-client'
 import { EnsureAuthenticated } from '@shared/middleware/ensure-authenticated'
 import { ErrorHandler } from '@shared/middleware/errorHandler'
@@ -20,6 +21,9 @@ async function startServer() {
 
   const { entriesRouter } = createEntriesModule(db)
   app.use('/entries', EnsureAuthenticated.register, entriesRouter)
+
+  const { userRouter } = createUserModule(db)
+  app.use('/user', EnsureAuthenticated.register, userRouter)
 
   app.use(ErrorHandler.register)
 
