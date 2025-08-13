@@ -1,6 +1,7 @@
 import { Collection, Db, ObjectId } from 'mongodb'
 
-import { Filter, IHistoryRepository } from './history'
+import { decodeCursor, encodeCursor } from '@shared/utils'
+import { FavoriteFilter, IHistoryRepository } from './history'
 
 interface HistoryDocument {
   _id?: ObjectId
@@ -27,27 +28,46 @@ export class HistoryMongoRepository implements IHistoryRepository {
     )
   }
 
-  async getAll(params: Filter) {
-    const { userId, limit = 25, page = 1 } = params
+  async getAll(params: FavoriteFilter) {
+    const { userId, limit, cursor, direction = 'next' } = params
 
-    const skip = (page - 1) * limit
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const seekFilter: any = {}
+    if (cursor) {
+      const decodedId = decodeCursor(cursor)
+      if (decodedId) {
+        const objectId = new ObjectId(decodedId)
+        seekFilter._id =
+          direction === 'next' ? { $gt: objectId } : { $lt: objectId }
+      }
+    }
+
     const totalDocs = await this.collection.countDocuments({ userId })
-    const totalPages = Math.ceil(totalDocs / limit)
-
-    const docs = await this.collection
-      .find({ userId })
-      .sort({ word: 1 })
-      .skip(skip)
-      .limit(limit)
+    const sortOrder = direction === 'previous' ? -1 : 1
+    let docs = await this.collection
+      .find({ userId, ...seekFilter })
+      .sort({ _id: sortOrder })
+      .limit(limit + 1)
       .toArray()
+
+    const hasExtraDoc = docs.length > limit
+    if (hasExtraDoc) docs = docs.slice(0, limit)
+
+    const previous =
+      docs.length && !!cursor ? encodeCursor(docs[0]._id.toHexString()) : null
+
+    const next =
+      docs.length && hasExtraDoc
+        ? encodeCursor(docs[docs.length - 1]._id.toHexString())
+        : null
 
     return {
       results: docs.map((doc) => ({ word: doc.word, added: doc.added })),
       totalDocs,
-      page,
-      totalPages,
-      hasNext: page < totalPages,
-      hasPrev: page > 1
+      previous,
+      next,
+      hasNext: hasExtraDoc,
+      hasPrev: !!cursor
     }
   }
 }

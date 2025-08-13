@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Collection, Db, ObjectId } from 'mongodb'
 
-import { Filter, IEntriesRepository } from './entries'
+import { Filter } from '@shared/types'
+import { decodeCursor, encodeCursor } from '@shared/utils'
+import { IEntriesRepository } from './entries'
 
 interface WordsDocument {
   _id: ObjectId
@@ -15,32 +18,51 @@ export class EntriesMongoRepository implements IEntriesRepository {
   }
 
   async findEntriesWithPage(params: Filter) {
-    const { search, limit = 25, page = 1 } = params
+    const { search, limit, cursor, direction = 'next' } = params
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const baseFilter: any = {}
     if (search) {
       const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
       baseFilter.word = { $regex: `^${escapedSearch}`, $options: 'i' }
     }
 
-    const skip = (page - 1) * limit
-    const totalDocs = await this.collection.countDocuments(baseFilter)
-    const totalPages = Math.ceil(totalDocs / limit)
+    const seekFilter: any = {}
+    if (cursor) {
+      const decodedId = decodeCursor(cursor)
+      if (decodedId) {
+        const objectId = new ObjectId(decodedId)
+        seekFilter._id =
+          direction === 'next' ? { $gt: objectId } : { $lt: objectId }
+      }
+    }
 
-    const docs = await this.collection
-      .find(baseFilter)
-      .sort({ word: 1 })
-      .skip(skip)
-      .limit(limit)
+    const sortOrder = direction === 'previous' ? -1 : 1
+    let docs = await this.collection
+      .find({ $and: [baseFilter, seekFilter] })
+      .sort({ _id: sortOrder })
+      .limit(limit + 1)
       .toArray()
+
+    const hasExtraDoc = docs.length > limit
+    if (hasExtraDoc) docs = docs.slice(0, limit)
+
+    const previous =
+      docs.length && !!cursor ? encodeCursor(docs[0]._id.toHexString()) : null
+
+    const next =
+      docs.length && hasExtraDoc
+        ? encodeCursor(docs[docs.length - 1]._id.toHexString())
+        : null
+
+    const totalDocs = await this.collection.countDocuments(baseFilter)
 
     return {
       results: docs.map((doc) => doc.word),
       totalDocs,
-      totalPages,
-      hasNext: page < totalPages,
-      hasPrev: page > 1
+      previous,
+      next,
+      hasNext: hasExtraDoc,
+      hasPrev: !!cursor
     }
   }
 }

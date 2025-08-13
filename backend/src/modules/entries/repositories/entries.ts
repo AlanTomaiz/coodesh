@@ -1,17 +1,6 @@
-export interface Filter {
-  search?: string
-  limit: number
-  page: number
-}
+import { Filter, PaginatedResult } from '@shared/types'
 
-export interface IndexReturn {
-  results: string[]
-  totalDocs: number
-  totalPages: number
-  hasNext: boolean
-  hasPrev: boolean
-}
-
+type FilterResult = PaginatedResult<string>
 export interface IEntriesRepository {
-  findEntriesWithPage(params: Filter): Promise<IndexReturn>
+  findEntriesWithPage(params: Filter): Promise<FilterResult>
 }

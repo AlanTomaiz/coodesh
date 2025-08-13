@@ -8,17 +8,18 @@ export class EntriesController {
 
   async getDictionary(req: Request, res: Response) {
     const search = req.query.search as string | undefined
-    const limit = parseInt(req.query.limit as string) || 10
-    const page = parseInt(req.query.page as string) || 1
-    const data = await this.service.getDictionaryWords({ search, limit, page })
+    const limit = parseInt(req.query.limit as string) || 25
+    const cursor = req.query.cursor as string | undefined
+    const direction = (req.query.direction as 'next' | 'previous') || 'next'
 
-    res.json({
-      results: data.results,
-      totalDocs: data.totalDocs,
-      totalPages: data.totalPages,
-      hasNext: data.hasNext,
-      hasPrev: data.hasPrev
+    const data = await this.service.getDictionaryWords({
+      search,
+      limit,
+      cursor,
+      direction
     })
+
+    res.json(data)
   }
 
   async getEntryByWord(req: Request, res: Response) {
