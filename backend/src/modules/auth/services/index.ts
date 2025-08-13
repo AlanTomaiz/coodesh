@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-import { AppError } from '@error/appError.ts'
-import { User } from '@module/user/model.ts'
-import { IAuthRepository } from '../repositories/auth.ts'
+import { AppError } from '@error/appError'
+import { User } from '@module/user/models/user'
+import { IAuthRepository } from '../repositories/auth'
 
 interface RequestCreate {
   name: string
