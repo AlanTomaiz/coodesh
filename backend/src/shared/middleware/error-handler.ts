@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 
-import { AppError } from '@error/appError'
+import { AppError } from '@error/app-error'
 
 export class ErrorHandler {
   static register(error: Error, req: Request, res: Response, _: NextFunction) {

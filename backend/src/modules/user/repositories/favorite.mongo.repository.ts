@@ -1,20 +1,20 @@
 import { Collection, Db, ObjectId } from 'mongodb'
 
 import { decodeCursor, encodeCursor } from '@shared/utils'
-import { FavoriteFilter, IHistoryRepository } from './history'
+import { FavoriteFilter, IFavoriteRepository } from './favorite.repository'
 
-interface HistoryDocument {
+interface FavoriteDocument {
   _id?: ObjectId
   userId: string
   word: string
   added: Date
 }
 
-export class HistoryMongoRepository implements IHistoryRepository {
-  private collection: Collection<HistoryDocument>
+export class FavoriteMongoRepository implements IFavoriteRepository {
+  private collection: Collection<FavoriteDocument>
 
   constructor(db: Db) {
-    this.collection = db.collection<HistoryDocument>('user_history')
+    this.collection = db.collection<FavoriteDocument>('user_favorites')
     this.collection
       .createIndex({ userId: 1, word: 1 }, { unique: true })
       .catch(() => {})
@@ -22,10 +22,14 @@ export class HistoryMongoRepository implements IHistoryRepository {
 
   async addWord(userId: string, word: string) {
     await this.collection.updateOne(
-      { userId, word },
-      { $setOnInsert: { added: new Date() } },
+      { userId: userId, word },
+      { $setOnInsert: { favoritedAt: new Date() } },
       { upsert: true }
     )
+  }
+
+  async removeWord(userId: string, word: string) {
+    await this.collection.deleteOne({ userId, word })
   }
 
   async getAll(params: FavoriteFilter) {
@@ -42,8 +46,8 @@ export class HistoryMongoRepository implements IHistoryRepository {
       }
     }
 
-    const totalDocs = await this.collection.countDocuments({ userId })
     const sortOrder = direction === 'previous' ? -1 : 1
+    const totalDocs = await this.collection.countDocuments({ userId })
     let docs = await this.collection
       .find({ userId, ...seekFilter })
       .sort({ _id: sortOrder })

@@ -1,4 +1,4 @@
-import { AppError } from '@error/appError'
+import { AppError } from '@error/app-error'
 
 export class ExternalDictionaryService {
   private readonly baseUrl = 'https://api.dictionaryapi.dev/api/v2/entries/en'

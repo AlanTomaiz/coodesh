@@ -3,7 +3,7 @@ import { Collection, Db, ObjectId } from 'mongodb'
 
 import { Filter } from '@shared/types'
 import { decodeCursor, encodeCursor } from '@shared/utils'
-import { IEntriesRepository } from './entries'
+import { IEntriesRepository } from './entries.repository'
 
 interface WordsDocument {
   _id: ObjectId
@@ -36,6 +36,7 @@ export class EntriesMongoRepository implements IEntriesRepository {
       }
     }
 
+    const totalDocs = await this.collection.countDocuments(baseFilter)
     const sortOrder = direction === 'previous' ? -1 : 1
     let docs = await this.collection
       .find({ $and: [baseFilter, seekFilter] })
@@ -53,8 +54,6 @@ export class EntriesMongoRepository implements IEntriesRepository {
       docs.length && hasExtraDoc
         ? encodeCursor(docs[docs.length - 1]._id.toHexString())
         : null
-
-    const totalDocs = await this.collection.countDocuments(baseFilter)
 
     return {
       results: docs.map((doc) => doc.word),

@@ -1,4 +1,5 @@
 export type Filter = {
+  userId?: string
   search?: string
   limit: number
   cursor?: string

@@ -1,7 +1,8 @@
-import { AppError } from '@error/appError'
-import { IFavoriteRepository } from '../repositories/favorite'
-import { Filter, IHistoryRepository } from '../repositories/history'
-import { IUserRepository } from '../repositories/user'
+import { AppError } from '@error/app-error'
+import { Filter } from '@shared/types'
+import { IFavoriteRepository } from '../repositories/favorite.repository'
+import { IHistoryRepository } from '../repositories/history.repository'
+import { IUserRepository } from '../repositories/user.repository'
 
 export class UserService {
   constructor(

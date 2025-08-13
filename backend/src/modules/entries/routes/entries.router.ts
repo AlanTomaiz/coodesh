@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { EntriesController } from '../controllers'
+import { EntriesController } from '../controllers/entries.controller'
 
 export function createEntriesRouter(controller: EntriesController) {
   const router = Router()

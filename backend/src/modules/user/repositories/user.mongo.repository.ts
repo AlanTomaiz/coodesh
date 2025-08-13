@@ -1,7 +1,7 @@
 import { Collection, Db, ObjectId } from 'mongodb'
 
-import { User } from '../models/user'
-import { IUserRepository } from './user'
+import { User } from '../models/user.model'
+import { IUserRepository } from './user.repository'
 
 interface UserDocument {
   _id: ObjectId

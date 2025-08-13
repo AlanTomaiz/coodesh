@@ -1,7 +1,7 @@
-import { IFavoriteRepository } from '@module/user/repositories/favorite'
-import { IHistoryRepository } from '@module/user/repositories/history'
+import { IFavoriteRepository } from '@module/user/repositories/favorite.repository'
+import { IHistoryRepository } from '@module/user/repositories/history.repository'
 import { Filter } from '@shared/types'
-import { IEntriesRepository } from '../repositories/entries'
+import { IEntriesRepository } from '../repositories/entries.repository'
 import { ExternalDictionaryService } from './external-dictionary.service'
 
 interface Request {

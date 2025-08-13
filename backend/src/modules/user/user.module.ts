@@ -1,11 +1,11 @@
 import { Db } from 'mongodb'
 
-import { UserController } from './controllers'
-import { FavoriteMongoRepository } from './repositories/favorite.mongo'
-import { HistoryMongoRepository } from './repositories/history.mongo'
-import { UserMongoRepository } from './repositories/user.mongo'
-import { createUserRouter } from './routes'
-import { UserService } from './services'
+import { UserController } from './controllers/user.controller'
+import { FavoriteMongoRepository } from './repositories/favorite.mongo.repository'
+import { HistoryMongoRepository } from './repositories/history.mongo.repository'
+import { UserMongoRepository } from './repositories/user.mongo.repository'
+import { createUserRouter } from './routes/user.router'
+import { UserService } from './services/user.service'
 
 export function createUserModule(db: Db) {
   const userRepository = new UserMongoRepository(db)

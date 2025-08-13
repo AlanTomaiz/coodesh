@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 
-import { AppError } from '@error/appError'
-import { AuthService } from '../services'
+import { AppError } from '@error/app-error'
+import { AuthService } from '../services/auth.service'
 
 export class AuthController {
   constructor(private authService: AuthService) {}

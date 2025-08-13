@@ -1,12 +1,12 @@
 import 'dotenv/config'
 import express from 'express'
 
-import { createAuthModule } from '@module/auth/module'
-import { createEntriesModule } from '@module/entries/module'
-import { createUserModule } from '@module/user/module'
+import { createAuthModule } from '@module/auth/auth.module'
+import { createEntriesModule } from '@module/entries/entries.module'
+import { createUserModule } from '@module/user/user.module'
 import { connectMongo } from '@shared/database/mongo-client'
 import { EnsureAuthenticated } from '@shared/middleware/ensure-authenticated'
-import { ErrorHandler } from '@shared/middleware/errorHandler'
+import { ErrorHandler } from '@shared/middleware/error-handler'
 
 async function startServer() {
   const db = await connectMongo()

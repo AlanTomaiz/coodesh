@@ -1,10 +1,10 @@
 import { Db } from 'mongodb'
 
-import { FavoriteMongoRepository } from '@module/user/repositories/favorite.mongo'
-import { HistoryMongoRepository } from '@module/user/repositories/history.mongo'
-import { EntriesController } from './controllers'
-import { EntriesMongoRepository } from './repositories/entries.mongo'
-import { createEntriesRouter } from './routes'
+import { FavoriteMongoRepository } from '@module/user/repositories/favorite.mongo.repository'
+import { HistoryMongoRepository } from '@module/user/repositories/history.mongo.repository'
+import { EntriesController } from './controllers/entries.controller'
+import { EntriesMongoRepository } from './repositories/entries.mongo.repository'
+import { createEntriesRouter } from './routes/entries.router'
 import { EntriesService } from './services/entries.service'
 import { ExternalDictionaryService } from './services/external-dictionary.service'
 

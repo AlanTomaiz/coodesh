@@ -1,19 +1,21 @@
-import { decodeCursor, encodeCursor } from '@shared/utils'
 import { Collection, Db, ObjectId } from 'mongodb'
-import { FavoriteFilter, IFavoriteRepository } from './favorite'
 
-interface FavoriteDocument {
+import { Filter } from '@shared/types'
+import { decodeCursor, encodeCursor } from '@shared/utils'
+import { IHistoryRepository } from './history.repository'
+
+interface HistoryDocument {
   _id?: ObjectId
   userId: string
   word: string
   added: Date
 }
 
-export class FavoriteMongoRepository implements IFavoriteRepository {
-  private collection: Collection<FavoriteDocument>
+export class HistoryMongoRepository implements IHistoryRepository {
+  private collection: Collection<HistoryDocument>
 
   constructor(db: Db) {
-    this.collection = db.collection<FavoriteDocument>('user_favorites')
+    this.collection = db.collection<HistoryDocument>('user_history')
     this.collection
       .createIndex({ userId: 1, word: 1 }, { unique: true })
       .catch(() => {})
@@ -21,17 +23,13 @@ export class FavoriteMongoRepository implements IFavoriteRepository {
 
   async addWord(userId: string, word: string) {
     await this.collection.updateOne(
-      { userId: userId, word },
-      { $setOnInsert: { favoritedAt: new Date() } },
+      { userId, word },
+      { $setOnInsert: { added: new Date() } },
       { upsert: true }
     )
   }
 
-  async removeWord(userId: string, word: string) {
-    await this.collection.deleteOne({ userId, word })
-  }
-
-  async getAll(params: FavoriteFilter) {
+  async getAll(params: Filter) {
     const { userId, limit, cursor, direction = 'next' } = params
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,8 +43,8 @@ export class FavoriteMongoRepository implements IFavoriteRepository {
       }
     }
 
-    const sortOrder = direction === 'previous' ? -1 : 1
     const totalDocs = await this.collection.countDocuments({ userId })
+    const sortOrder = direction === 'previous' ? -1 : 1
     let docs = await this.collection
       .find({ userId, ...seekFilter })
       .sort({ _id: sortOrder })

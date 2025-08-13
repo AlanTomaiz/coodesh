@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
-import { AppError } from '@error/appError'
+import { AppError } from '@error/app-error'
 
 const JWT_SECRET = process.env.JWT_SECRET! || 'supersecret'
 

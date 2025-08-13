@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import { AppError } from '@error/appError'
+import { AppError } from '@error/app-error'
 import { EntriesService } from '../services/entries.service'
 
 export class EntriesController {
