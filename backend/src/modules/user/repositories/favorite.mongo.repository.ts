@@ -1,7 +1,8 @@
 import { Collection, Db, ObjectId } from 'mongodb'
 
+import { Filter } from '@shared/types'
 import { decodeCursor, encodeCursor } from '@shared/utils'
-import { FavoriteFilter, IFavoriteRepository } from './favorite.repository'
+import { IFavoriteRepository } from './favorite.repository'
 
 interface FavoriteDocument {
   _id?: ObjectId
@@ -32,7 +33,7 @@ export class FavoriteMongoRepository implements IFavoriteRepository {
     await this.collection.deleteOne({ userId, word })
   }
 
-  async getAll(params: FavoriteFilter) {
+  async getAll(params: Filter) {
     const { userId, limit, cursor, direction = 'next' } = params
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

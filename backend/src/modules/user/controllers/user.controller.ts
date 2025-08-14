@@ -12,11 +12,14 @@ export class UserController {
 
   async indexHistory(req: Request, res: Response) {
     const limit = parseInt(req.query.limit as string) || 25
-    const page = parseInt(req.query.page as string) || 1
+    const cursor = req.query.cursor as string | undefined
+    const direction = (req.query.direction as 'next' | 'previous') || 'next'
+
     const data = await this.userService.listHistory({
       userId: req.userid,
       limit,
-      page
+      cursor,
+      direction
     })
 
     res.json(data)
@@ -24,11 +27,14 @@ export class UserController {
 
   async indexFavorites(req: Request, res: Response) {
     const limit = parseInt(req.query.limit as string) || 25
-    const page = parseInt(req.query.page as string) || 1
+    const cursor = req.query.cursor as string | undefined
+    const direction = (req.query.direction as 'next' | 'previous') || 'next'
+
     const data = await this.userService.listFavorites({
       userId: req.userid,
       limit,
-      page
+      cursor,
+      direction
     })
 
     res.json(data)
