@@ -24,7 +24,8 @@
     "paths": {
       "@error/*": ["errors/*"],
       "@module/*": ["modules/*"],
-      "@shared/*": ["shared/*"]
+      "@shared/*": ["shared/*"],
+      "@tests/*": ["__mocks__/*"]
     }
   },
   "include": ["src"],

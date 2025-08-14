@@ -9,7 +9,8 @@ module.exports = {
   moduleNameMapper: {
     '^@module/(.*)$': '<rootDir>/src/modules/$1',
     '^@shared/(.*)$': '<rootDir>/src/shared/$1',
-    '^@error/(.*)$': '<rootDir>/src/errors/$1'
+    '^@error/(.*)$': '<rootDir>/src/errors/$1',
+    '^@tests/(.*)$': '<rootDir>/src/__mocks__/$1'
   },
 
   collectCoverage: true,

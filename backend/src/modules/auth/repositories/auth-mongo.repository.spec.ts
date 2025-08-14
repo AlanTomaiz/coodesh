@@ -1,24 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { User } from '@module/user/models/user.model'
-import { Collection, Db, ObjectId } from 'mongodb'
+import { createMockCollection, createMockDb } from '@tests/mongo'
+import { ObjectId } from 'mongodb'
 import { AuthMongoRepository } from './auth.mongo.repoitory'
 
 describe('AuthMongoRepository', () => {
-  let dbMock: jest.Mocked<Db>
-  let collectionMock: jest.Mocked<Collection<any>>
+  let collectionMock: ReturnType<typeof createMockCollection>
+  let dbMock: ReturnType<typeof createMockDb>
   let repo: AuthMongoRepository
 
   beforeEach(() => {
-    collectionMock = {
-      findOne: jest.fn(),
-      insertOne: jest.fn(),
-      createIndex: jest.fn().mockResolvedValue(undefined)
-    } as any
-
-    dbMock = {
-      collection: jest.fn().mockReturnValue(collectionMock)
-    } as any
-
+    collectionMock = createMockCollection()
+    dbMock = createMockDb(collectionMock)
     repo = new AuthMongoRepository(dbMock)
   })
 
